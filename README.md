@@ -1,24 +1,24 @@
 # Jolly-Chimp
 
-Jolly-Chimp is a web-monitor application that provides real-time information on various services, websites, and public APIs. It allows you to keep track of the status of your websites, monitor your services, check train schedules for specific routes, and view the operating hours of public trash facilities via an API.
+Jolly-Chimp is a web-monitor application that provides real-time information on various services, websites, and public APIs. It allows you to keep track of the status of your websites, monitor your services, check train schedules for specific routes, and view the operating hours of recycling center via an API.
 
 ## Features
 
-- **Website Monitoring**: Displays the current status of all your websites with uptime and response time metrics.
-- **Service Monitoring**: Monitors the health of various internal services and displays their current status.
-- **Train Schedules**: Shows the next available trains for a given route using real-time train scheduling APIs.
-- **Public Trash API**: Displays the operating hours for public trash facilities, keeping you informed about waste management services in your area.
+ - **Website Monitoring**: Displays the current status of all your websites with uptime and response time metrics.
+ - **Service Monitoring**: Monitors the health of various internal services and displays their current status.
+ - **Train Schedules**: Shows the next available trains for a given route using real-time train scheduling APIs.
+ - **Recycling center API**: Displays the operating hours for Recycling center.
 
 ## Technologies Used
 
-- **Frontend**: [React](https://reactjs.org/) with [Vite](https://vitejs.dev/) and [TypeScript](https://www.typescriptlang.org/) for fast, type-safe development.
-- **Backend**: [FastAPI](https://fastapi.tiangolo.com/) with [Python](https://www.python.org/) for serving the API endpoints.
-- **Database**: [MySQL](https://www.mysql.com/) for persistent storage.
-- **Authentication**: [JWT](https://jwt.io/) for secure token-based authentication.
-- **Other Tools**:
-  - [Axios](https://axios-http.com/) for making HTTP requests from the frontend.
-  - [React Query](https://tanstack.com/query/v4/docs/framework/react/overview) for managing API state and caching on the frontend.
-  - [Docker](https://www.docker.com/) for containerized deployment and scalability.
+ - **Frontend**: [React](https://reactjs.org/) with [Vite](https://vitejs.dev/) and [TypeScript](https://www.typescriptlang.org/) for fast, type-safe development.
+ - **Backend**: [FastAPI](https://fastapi.tiangolo.com/) with [Python](https://www.python.org/) for serving the API endpoints.
+ - **Database**: [MySQL](https://www.mysql.com/) for persistent storage.
+ - **Authentication**: [JWT](https://jwt.io/) for secure token-based authentication.
+ - **Other Tools**:
+    - [Axios](https://axios-http.com/) for making HTTP requests from the frontend.
+    - [React Query](https://tanstack.com/query/v4/docs/framework/react/overview) for managing API state and caching on the frontend.
+    - [Docker](https://www.docker.com/) for containerized deployment and scalability.
 
 ## Getting Started
 

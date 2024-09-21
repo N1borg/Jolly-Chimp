@@ -1,45 +1,58 @@
 version: '3.8'
 
 services:
-  db:
-    image: mysql:latest
-    container_name: mysql_db
+  database:
+    image: mysql:8.0
+    container_name: jollychimp_mysql
     environment:
+      MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_USER: ${DATABASE_USER}
-      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "${DATABASE_PORT}:3306"
+      - "3306:3306"
     networks:
       - backend
     volumes:
-      - ./backend/sql:/docker-entrypoint-initdb.d
+      - ./mysql_data:/var/lib/mysql
+      - ./database/sql_schemas/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      - ./database/sql_schemas/pihole.sql:/docker-entrypoint-initdb.d/pihole.sql
+      - ./database/sql_schemas/recycling_center.sql:/docker-entrypoint-initdb.d/recycling_center.sql
+      - ./database/sql_schemas/train.sql:/docker-entrypoint-initdb.d/train.sql
+      - ./database/sql_schemas/website.sql:/docker-entrypoint-initdb.d/website.sql
+    restart: always
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #   container_name: frontend_app
-  #   ports:
-  #     - "3000:3000"
-  #   networks:
-  #     - frontend
-
+  scraper:
+    build: scraper
+    container_name: jollychimp_scraper
+    restart: always
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - backend
+  
   api:
-    build:
-      context: ./backend
-    container_name: fastapi_app
+    build: api
+    container_name: jollychimp_api
     depends_on:
-      - db
+      - database
+    restart: always
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "8000:8000"
-    env_file:
-      - ./backend/.env
     networks:
       - backend
 
 networks:
   backend:
     driver: bridge
-  # frontend:
-  #   driver: bridge
+#   frontend:
+#     driver: bridge
