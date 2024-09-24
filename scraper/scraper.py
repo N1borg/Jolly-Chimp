@@ -14,11 +14,12 @@ def job_pihole():
 #     get_train_status()
 
 # Schedule the jobs
-# schedule.every(1).minutes.do(job_website)
-schedule.every(30).seconds.do(job_pihole)
+schedule.every(1).minutes.do(job_website)
+schedule.every(1).minutes.do(job_pihole)
 # schedule.every(1).minutes.do(job_train)
 
 print("Running scheduled jobs...")
+
 # Keep the script running
 while True:
     schedule.run_pending()

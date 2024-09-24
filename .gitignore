@@ -2,6 +2,7 @@
 .idea
 .env
 .docker
+config.json
 venv
 __pycache__
 mysql_data
