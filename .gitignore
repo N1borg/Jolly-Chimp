@@ -5,5 +5,4 @@
 venv
 __pycache__
 mysql_data
-init.sql
 node_modules

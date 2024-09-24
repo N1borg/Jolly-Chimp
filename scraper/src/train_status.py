@@ -9,7 +9,6 @@ load_dotenv()
 
 # Get a connection to the database
 def get_db_connection():
-    print()
     return mysql.connector.connect(
             host=os.getenv('MYSQL_HOST'),
             port=3306,

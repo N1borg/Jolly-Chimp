@@ -1,11 +1,13 @@
 version: '3.8'
 
 services:
+
   database:
     image: mysql:8.0
     container_name: jollychimp_mysql
+    restart: unless-stopped
     environment:
-      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_HOST: database
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -21,28 +23,29 @@ services:
       - ./database/sql_schemas/recycling_center.sql:/docker-entrypoint-initdb.d/recycling_center.sql
       - ./database/sql_schemas/train.sql:/docker-entrypoint-initdb.d/train.sql
       - ./database/sql_schemas/website.sql:/docker-entrypoint-initdb.d/website.sql
-    restart: always
 
   scraper:
     build: scraper
     container_name: jollychimp_scraper
-    restart: always
+    restart: unless-stopped
+    depends_on:
+      - database
     environment:
-      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_HOST: database
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      PIHOLE_HOST: ${PIHOLE_HOST}
+      PIHOLE_API_KEY: ${PIHOLE_API_KEY}
     networks:
       - backend
-  
+
   api:
     build: api
     container_name: jollychimp_api
-    depends_on:
-      - database
-    restart: always
+    restart: unless-stopped
     environment:
-      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_HOST: database
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}

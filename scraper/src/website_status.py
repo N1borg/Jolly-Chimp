@@ -1,16 +1,14 @@
 import json
 import requests
 import mysql.connector
+from dotenv import load_dotenv
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 # Get a connection to the database
 def get_db_connection():
-    print()
     return mysql.connector.connect(
             host=os.getenv('MYSQL_HOST'),
             port=3306,
@@ -37,9 +35,7 @@ def update_website_status_in_db(name, url, status):
     connection = get_db_connection()
     if connection is None:
         print("Error: Could not connect to the database.")
-    else:
-        print("Connection to MySQL DB successful")
-    
+
     cursor = connection.cursor(dictionary=True)
 
     # Check if the website already exists in the database
@@ -83,8 +79,3 @@ def get_website_status():
         # Wait for all threads to complete
         for future in as_completed(futures):
             future.result()  # This will raise any exception if occurred during thread execution
-
-    connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
-
-    print("Website statuses updated.")
