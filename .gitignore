@@ -7,3 +7,5 @@ venv
 __pycache__
 mysql_data
 node_modules
+
+*template*

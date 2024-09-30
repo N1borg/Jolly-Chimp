@@ -5,3 +5,22 @@
         {"name": "rien", "url": "https://fnbrzuibzbz.fr"}
     ]
 }
+
+
+{
+    "websites": [
+        {"name": "PLEX", "url": "http://niborgpro.fr:32400/"},
+        {"name": "Niborg Pro", "url": "https://niborgpro.fr/"}
+    ],
+    "servers": [
+        {
+            "name": "server1",
+            "ip": "192.168.1.2",
+            "port": 0,
+            "monitor": {
+                "minecraft": true,
+                "samba": true
+            }
+        }
+    ]
+}

@@ -12,9 +12,8 @@ Jolly-Chimp is a web-monitor application that provides real-time information on 
 ## Technologies Used
 
  - **Frontend**: [React](https://reactjs.org/) with [Vite](https://vitejs.dev/) and [TypeScript](https://www.typescriptlang.org/) for fast, type-safe development.
- - **Backend**: [FastAPI](https://fastapi.tiangolo.com/) with [Python](https://www.python.org/) for serving the API endpoints.
+ - **Backend (API)**: [FastAPI](https://fastapi.tiangolo.com/) with [Python](https://www.python.org/) for serving the API endpoints.
  - **Database**: [MySQL](https://www.mysql.com/) for persistent storage.
- - **Authentication**: [JWT](https://jwt.io/) for secure token-based authentication.
  - **Other Tools**:
     - [Axios](https://axios-http.com/) for making HTTP requests from the frontend.
     - [React Query](https://tanstack.com/query/v4/docs/framework/react/overview) for managing API state and caching on the frontend.

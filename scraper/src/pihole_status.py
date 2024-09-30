@@ -16,6 +16,11 @@ def get_db_connection():
             database=os.getenv('MYSQL_DATABASE')
         )
 
+# Load the websites from config.json
+def load_websites_from_config():
+    with open('./config.json', 'r') as f:
+        return json.load(f).get('websites', [])
+
 # Get Pi-hole status and stats
 def get_pihole_stats():
     try:
@@ -37,7 +42,6 @@ def get_pihole_stats():
         }
     except Exception as e:
         # Set status to 0 if Pi-hole is not responding
-        print(f"Error retrieving Pi-hole data: {e}")
         return {
             'status': 0,
             'dns_queries_today': 0,
