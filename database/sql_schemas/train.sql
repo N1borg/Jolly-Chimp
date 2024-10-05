@@ -1,5 +1,0 @@
-CREATE TABLE IF NOT EXISTS train (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    route VARCHAR(255) NOT NULL,
-    next_train_time VARCHAR(50) NOT NULL
-);

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
 
   database:
@@ -20,8 +18,6 @@ services:
       - ./mysql_data:/var/lib/mysql
       - ./database/sql_schemas/setup.sql:/docker-entrypoint-initdb.d/setup.sql
       - ./database/sql_schemas/pihole.sql:/docker-entrypoint-initdb.d/pihole.sql
-      - ./database/sql_schemas/recycling_center.sql:/docker-entrypoint-initdb.d/recycling_center.sql
-      - ./database/sql_schemas/train.sql:/docker-entrypoint-initdb.d/train.sql
       - ./database/sql_schemas/website.sql:/docker-entrypoint-initdb.d/website.sql
 
   scraper:
@@ -53,9 +49,21 @@ services:
       - "8000:8000"
     networks:
       - backend
+      - frontend
+
+  frontend:
+    build: frontend
+    container_name: jollychimp_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - frontend
 
 networks:
   backend:
     driver: bridge
-#   frontend:
-#     driver: bridge
+  frontend:
+    driver: bridge

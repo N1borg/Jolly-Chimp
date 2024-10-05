@@ -1,26 +1,6 @@
-import json
 import requests
-import mysql.connector
-from dotenv import load_dotenv
-import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
-load_dotenv()
-
-# Get a connection to the database
-def get_db_connection():
-    return mysql.connector.connect(
-            host=os.getenv('MYSQL_HOST'),
-            port=3306,
-            database=os.getenv('MYSQL_DATABASE'),
-            user=os.getenv('MYSQL_USER'),
-            password=os.getenv('MYSQL_PASSWORD')
-        )
-
-# Load the websites from config.json
-def load_websites_from_config():
-    with open('./config.json', 'r') as f:
-        return json.load(f).get('websites', [])
+from src.common_functions import get_db_connection, close_db_connection, load_websites_from_config, get_ip_by_hostname
 
 # Check website status
 def check_website_status(url):
@@ -59,7 +39,7 @@ def update_website_status_in_db(name, url, status):
         connection.commit()
 
     cursor.close()
-    connection.close()
+    close_db_connection(connection)
 
 # Task to check website status and update the database
 def check_and_update_status(site):

@@ -1,15 +1,23 @@
-from fastapi import APIRouter, HTTPException
-from typing import Dict
-import requests
-import os
-
+from fastapi import APIRouter, Depends
+from src.database import get_db_connection, close_db_connection
 router = APIRouter()
 
-@router.get("/stats")
-async def get_pihole_stats():
-    api_key = os.getenv("PIHOLE_API_KEY")
-    url = f"http://pi.hole/admin/api.php?summaryRaw&auth={api_key}"
-    response = requests.get(url)
-    if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail="Error fetching Pi-hole data")
-    return response.json()
+@router.get("/")
+def get_websites():
+    connection = get_db_connection()
+    if not connection:
+        return {"error": "Database connection failed"}
+
+    cursor = connection.cursor(dictionary=True)
+
+    # Corrected SQL query with commas between column names
+    select_query = """
+        SELECT name, ip, status, dns_queries_today, ads_blocked_today, ads_percentage_today 
+        FROM pihole
+    """
+    cursor.execute(select_query)
+
+    result = cursor.fetchall()
+    close_db_connection(connection)
+
+    return result

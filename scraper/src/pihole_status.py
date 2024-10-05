@@ -1,25 +1,6 @@
-import json
 import requests
-import mysql.connector
-from dotenv import load_dotenv
 import os
-
-load_dotenv()
-
-# Get a connection to the database
-def get_db_connection():
-    return mysql.connector.connect(
-            host=os.getenv('MYSQL_HOST'),
-            port=3306,
-            user=os.getenv('MYSQL_USER'),
-            password=os.getenv('MYSQL_PASSWORD'),
-            database=os.getenv('MYSQL_DATABASE')
-        )
-
-# Load the websites from config.json
-def load_websites_from_config():
-    with open('./config.json', 'r') as f:
-        return json.load(f).get('websites', [])
+from src.common_functions import get_db_connection, close_db_connection, load_websites_from_config, get_ip_by_hostname
 
 # Get Pi-hole status and stats
 def get_pihole_stats():
@@ -29,12 +10,16 @@ def get_pihole_stats():
         response = requests.get(f"http://{host}/admin/api.php?summaryRaw&auth={api_key}", timeout=10)
         data = response.json()
 
+        name = host
+        ip = get_ip_by_hostname(host)
         status = 1 if data['status'] == 'enabled' else 0
         dns_queries_today = data.get('dns_queries_today', 0)
         ads_blocked_today = data.get('ads_blocked_today', 0)
         ads_percentage_today = float(data.get('ads_percentage_today', 0.0))
 
         return {
+            'name': name,
+            'ip': ip,
             'status': status,
             'dns_queries_today': dns_queries_today,
             'ads_blocked_today': ads_blocked_today,
@@ -43,6 +28,8 @@ def get_pihole_stats():
     except Exception as e:
         # Set status to 0 if Pi-hole is not responding
         return {
+            'name': host,
+            'ip': get_ip_by_hostname(host),
             'status': 0,
             'dns_queries_today': 0,
             'ads_blocked_today': 0,
@@ -65,6 +52,8 @@ def get_pihole_status():
             sql = """
             UPDATE pihole 
             SET 
+                name = %s,
+                ip = %s,
                 status = %s,
                 dns_queries_today = %s,
                 ads_blocked_today = %s,
@@ -72,6 +61,8 @@ def get_pihole_status():
             ORDER BY id DESC LIMIT 1;
             """
             values = (
+                pihole_data['name'],
+                pihole_data['ip'],
                 pihole_data['status'],
                 pihole_data['dns_queries_today'],
                 pihole_data['ads_blocked_today'],
@@ -82,10 +73,12 @@ def get_pihole_status():
         else:
             # Insert new data
             sql = """
-            INSERT INTO pihole (status, dns_queries_today, ads_blocked_today, ads_percentage_today)
-            VALUES (%s, %s, %s, %s);
+            INSERT INTO pihole (name, ip, status, dns_queries_today, ads_blocked_today, ads_percentage_today)
+            VALUES (%s, %s, %s, %s, %s, %s);
             """
             values = (
+                pihole_data['name'],
+                pihole_data['ip'],
                 pihole_data['status'],
                 pihole_data['dns_queries_today'],
                 pihole_data['ads_blocked_today'],
@@ -99,4 +92,4 @@ def get_pihole_status():
         print("No data to update")
 
     cursor.close()
-    connection.close()
+    close_db_connection(connection)
