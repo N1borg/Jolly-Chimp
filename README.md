@@ -1,13 +1,11 @@
 # Jolly-Chimp
 
-Jolly-Chimp is a web-monitor application that provides real-time information on various services, websites, and public APIs. It allows you to keep track of the status of your websites, monitor your services, check train schedules for specific routes, and view the operating hours of recycling center via an API.
+Jolly-Chimp is a web-monitor application that provides real-time information on various services, websites, and public APIs. It allows you to keep track of the status of your websites and monitor your services.
 
 ## Features
 
  - **Website Monitoring**: Displays the current status of all your websites with uptime and response time metrics.
  - **Service Monitoring**: Monitors the health of various internal services and displays their current status.
- - **Train Schedules**: Shows the next available trains for a given route using real-time train scheduling APIs.
- - **Recycling center API**: Displays the operating hours for Recycling center.
 
 ## Technologies Used
 
@@ -24,7 +22,6 @@ Jolly-Chimp is a web-monitor application that provides real-time information on 
 ### Prerequisites
 
  - **Docker** (Ensure you have Docker and Docker Compose installed)
- - **NPM** or Yarn (for managing frontend dependencies)
 
 ### Installation
 
@@ -37,26 +34,35 @@ Jolly-Chimp is a web-monitor application that provides real-time information on 
 
 2. Install dependencies:
 
-    You will need environment files for both the frontend and backend. Copy the example .env files and configure them with your specific credentials and settings:
+    You will need an `.env` file and configure it with your specific credentials and settings. Copy the example environment file:
 
     ```bash
-    cp backend/.env.example backend/.env
-    cp frontend/.env.example frontend/.env
+    cp .env.example .env
     ```
 
-    Make sure the .env files contain information like API keys, database connection strings, etc.
+    Make sure the `.env` files contain information like API keys, database connection strings, etc.
 
-3. Build and start the containers using Docker Compose:
+3. Configure the scraper:
+
+    Copy the example configuration file for the scraper and adjust it according to your requirements:
 
     ```bash
-    docker-compose up --build
+    cp scraper/config.json.example scraper/config.json
+    ```
+
+    Ensure the `config.json` file contains the necessary settings for the scraper to function correctly.
+
+4. Build and start the containers using Docker Compose:
+
+    ```bash
+    docker compose up --build
     ```
 
     This will pull the necessary Docker images and run both the frontend and backend services in separate containers.
 
 ### Running the App
 
-After running the `docker-compose` command, your app should be live. The default setup exposes the services at:
+After running the `docker compose` command, your app should be live. The default setup exposes the services at:
 
  - **Frontend (React)**: `http://localhost:3000`
  - **Backend (FastAPI)**: `http://localhost:8000`
