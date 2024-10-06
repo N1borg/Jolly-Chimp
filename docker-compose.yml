@@ -18,7 +18,7 @@ services:
       - ./mysql_data:/var/lib/mysql
       - ./database/sql_schemas/setup.sql:/docker-entrypoint-initdb.d/setup.sql
       - ./database/sql_schemas/pihole.sql:/docker-entrypoint-initdb.d/pihole.sql
-      - ./database/sql_schemas/website.sql:/docker-entrypoint-initdb.d/website.sql
+      - ./database/sql_schemas/websites.sql:/docker-entrypoint-initdb.d/websites.sql
 
   scraper:
     build: scraper
@@ -51,16 +51,16 @@ services:
       - backend
       - frontend
 
-  frontend:
-    build: frontend
-    container_name: jollychimp_frontend
-    restart: unless-stopped
-    ports:
-      - "3000:80"
-    depends_on:
-      - api
-    networks:
-      - frontend
+  # frontend:
+  #   build: frontend
+  #   container_name: jollychimp_frontend
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:80"
+  #   depends_on:
+  #     - api
+  #   networks:
+  #     - frontend
 
 networks:
   backend:

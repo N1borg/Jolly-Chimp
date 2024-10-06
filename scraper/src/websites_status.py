@@ -1,6 +1,6 @@
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from src.common_functions import get_db_connection, close_db_connection, load_websites_from_config, get_ip_by_hostname
+from src.common_functions import get_db_connection, close_db_connection, load_websites_from_config
 
 # Check website status
 def check_website_status(url):
@@ -49,7 +49,7 @@ def check_and_update_status(site):
     update_website_status_in_db(name, url, status)
 
 # Get website statuses concurrently and update the database
-def get_website_status():
+def get_websites_status():
     websites = load_websites_from_config()
 
     # Use ThreadPoolExecutor to check all websites concurrently
