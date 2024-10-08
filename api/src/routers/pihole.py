@@ -11,7 +11,7 @@ def get_pihole():
     cursor = connection.cursor(dictionary=True)
 
     select_query = """
-        SELECT name, ip, status, dns_queries_today, ads_blocked_today, ads_percentage_today 
+        SELECT name, status, dns_queries_today, ads_blocked_today, ads_percentage_today 
         FROM pihole
     """
     cursor.execute(select_query)

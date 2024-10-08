@@ -1,11 +1,11 @@
 import React from 'react';
-import MainPage from './components/MainPage';
+import Dashboard from './pages/Dashboard';
 import './index.css';
 
 const App: React.FC = () => {
   return (
     <div>
-      <MainPage />
+      <Dashboard />
     </div>
   );
 };

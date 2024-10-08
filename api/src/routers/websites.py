@@ -10,7 +10,7 @@ def get_websites():
    
     cursor = connection.cursor(dictionary=True)
 
-    select_query = "SELECT name, url, status FROM websites"
+    select_query = "SELECT name, url, status, latency FROM websites"
     cursor.execute(select_query)
 
     result = cursor.fetchall()

@@ -51,16 +51,16 @@ services:
       - backend
       - frontend
 
-  frontend:
-    build: frontend
-    container_name: jollychimp_frontend
-    restart: unless-stopped
-    ports:
-      - "3000:80"
-    depends_on:
-      - api
-    networks:
-      - frontend
+  # frontend:
+  #   build: frontend
+  #   container_name: jollychimp_frontend
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:80"
+  #   depends_on:
+  #     - api
+  #   networks:
+  #     - frontend
 
 networks:
   backend:

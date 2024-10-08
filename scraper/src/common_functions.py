@@ -25,10 +25,3 @@ def close_db_connection(connection):
 def load_websites_from_config():
     with open('./config.json', 'r') as f:
         return json.load(f).get('websites', [])
-
-def get_ip_by_hostname(hostname):
-    try:
-        ip_address = socket.gethostbyname(hostname)
-    except socket.error as e:
-        ip_address = 'None'
-    return ip_address

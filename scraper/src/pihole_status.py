@@ -1,6 +1,6 @@
 import requests
 import os
-from src.common_functions import get_db_connection, close_db_connection, load_websites_from_config, get_ip_by_hostname
+from src.common_functions import get_db_connection, close_db_connection
 
 # Get Pi-hole status and stats
 def get_pihole_stats():
@@ -11,7 +11,6 @@ def get_pihole_stats():
         data = response.json()
 
         name = host
-        ip = get_ip_by_hostname(host)
         status = 1 if data['status'] == 'enabled' else 0
         dns_queries_today = data.get('dns_queries_today', 0)
         ads_blocked_today = data.get('ads_blocked_today', 0)
@@ -19,17 +18,14 @@ def get_pihole_stats():
 
         return {
             'name': name,
-            'ip': ip,
             'status': status,
             'dns_queries_today': dns_queries_today,
             'ads_blocked_today': ads_blocked_today,
             'ads_percentage_today': ads_percentage_today
         }
-    except Exception as e:
-        # Set status to 0 if Pi-hole is not responding
+    except Exception:
         return {
             'name': host,
-            'ip': get_ip_by_hostname(host),
             'status': 0,
             'dns_queries_today': 0,
             'ads_blocked_today': 0,
@@ -53,7 +49,6 @@ def get_pihole_status():
             UPDATE pihole 
             SET 
                 name = %s,
-                ip = %s,
                 status = %s,
                 dns_queries_today = %s,
                 ads_blocked_today = %s,
@@ -62,7 +57,6 @@ def get_pihole_status():
             """
             values = (
                 pihole_data['name'],
-                pihole_data['ip'],
                 pihole_data['status'],
                 pihole_data['dns_queries_today'],
                 pihole_data['ads_blocked_today'],
@@ -73,12 +67,11 @@ def get_pihole_status():
         else:
             # Insert new data
             sql = """
-            INSERT INTO pihole (name, ip, status, dns_queries_today, ads_blocked_today, ads_percentage_today)
-            VALUES (%s, %s, %s, %s, %s, %s);
+            INSERT INTO pihole (name, status, dns_queries_today, ads_blocked_today, ads_percentage_today)
+            VALUES (%s, %s, %s, %s, %s);
             """
             values = (
                 pihole_data['name'],
-                pihole_data['ip'],
                 pihole_data['status'],
                 pihole_data['dns_queries_today'],
                 pihole_data['ads_blocked_today'],
